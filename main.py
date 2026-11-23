@@ -45,6 +45,7 @@ def main():
     plt.plot(t, signal)
     plt.show()
 
+
     ks = np.arange(len(signal), dtype = float) / 20.0
     fs = fft(signal)
     # gs = np.fft.fft(signal)
@@ -58,12 +59,59 @@ def main():
         
         print(f"Freq {ks[i]}, abs {np.abs(fs[i]) * 2 / n}, phase {phases[i]}")
 
-
-
-
     # plt.plot(fs)
     plt.plot(ks, np.real(fs))
     plt.plot(ks, phases)
     plt.show()
+
+
+
+    if False:
+        fs = np.array(dft(signal))
+        gs = np.array(fft(signal))
+        hs = np.fft.fft(signal)
+
+        dfg = np.sum(np.abs(fs - gs))
+        dfh = np.sum(np.abs(fs - hs))
+
+        print(f"{dfg} {dfh}")
+
+
+    if True:
+        tf = []
+        tg = []
+        th = []
+        tests = [ 256, 512, 1024, 2048, 4096 ]
+
+        for nn in tests:
+            if True:
+                time_start = time.process_time()
+                _ = dft(signal[:nn])
+                time_end = time.process_time()
+                t = time_end - time_start
+                tf.append(t)
+
+            if True:
+                time_start = time.process_time()
+                _ = fft(signal[:nn])
+                time_end = time.process_time()
+                t = time_end - time_start
+                tg.append(t)
+
+            if True:
+                time_start = time.process_time()
+                arr = np.array(signal[:nn])
+                _ = np.fft.fft(arr)
+                time_end = time.process_time()
+                t = time_end - time_start
+                th.append(t)
+
+        plt.plot(tests, tf, color = "#ff0000")
+        plt.plot(tests, tg, color = "#00ff00")
+        plt.plot(tests, th, color = "#0000ff")
+        plt.show()
+
+
+
 
 main()
